@@ -9,5 +9,10 @@
             "email": "code@byjoby.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "DigraphProject\\": "src/"
+        }
+    },
     "require": {}
 }
