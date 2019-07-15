@@ -56,6 +56,7 @@ class ScriptHandler
             file_get_contents($src),
             $suffix,
         ]);
+        $code = str_replace('$', '\$', $code);
         //if destination doesn't exist, simply place code into destination
         if (!file_exists($dest)) {
             static::$event->getIO()->write("Placing new code $name in $dest");
