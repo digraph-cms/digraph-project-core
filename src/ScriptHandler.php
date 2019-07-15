@@ -31,34 +31,68 @@ class ScriptHandler
         $dest = realpath(__DIR__.'/../../../../');
 
         /* start creating directories */
-
         static::mkdir("$dest/digraph/storage", true);
         static::mkdir("$dest/digraph/cache", true);
         static::mkdir("$dest/web");
 
         /* copy files */
-
         static::copyFile("$src/digraph.yaml", "$dest/digraph/core/digraph.yaml");
         static::copyFile("$src/digraph.php", "$dest/digraph/core/digraph.php");
         static::copyFile("$src/index.php", "$dest/web/index.php");
-        static::copyFile("$src/.htaccess", "$dest/web/.htaccess", true);
+        static::placeCodeInFile("$src/htaccess", "$dest/web/.htaccess", "HTACCESS", true);
+        static::placeCodeInFile("$src/gitignore", "$dest/.gitignore", "GITIGNORE", true);
     }
 
-    protected static function copyFile($src, $dest, $keep=false)
+    protected static function placeCodeInFile($src, $dest, $name, $append=false, $lp='# ')
     {
-        if ($keep && file_exists($dest)) {
-            $dsrc = file_get_contents($dest);
-            $ssrc = file_get_contents($src);
-            if ($ssrc == $dsrc) {
-                //do nothing, files match
-                return;
-            }
-            static::$event->getIO()->write("New version of $dest may be available, delete it and run `composer install` again to update.");
-            if (strpos($dsrc, $ssrc) !== false) {
-                static::$event->getIO()->write("Your copy of $dest may not require updating, it contains the target code.");
-            }
+        //generate prefix/suffix so code can be found later and replaced
+        $prefix = $lp.'BEGIN DIGRAPH-MANAGED: '.$name;
+        $suffix = $lp.'END DIGRAPH-MANAGED: '.$name;
+        //generate code to be inserted, including prefix/suffix
+        $code = implode(PHP_EOL, [
+            $prefix,
+            $lp.'Do not edit this code, it will be replaced whenever composer update/install runs',
+            PHP_EOL,
+            file_get_contents($src),
+            $suffix,
+        ]);
+        //if destination doesn't exist, simply place code into destination
+        if (!file_exists($dest)) {
+            static::$event->getIO()->write("Placing new code $name in $dest");
+            file_put_contents($dest, $code);
             return;
         }
+        //destination file exists, so load its content
+        $destContent = file_get_contents($dest);
+        //build regex to find existing code in file
+        $regex = implode('',[
+            '/',
+            preg_quote($prefix),
+            '.+',
+            preg_quote($suffix),
+            '/s'
+        ]);
+        //append/prepend code if it isn't already in the file
+        if (!preg_match($regex,$destContent)) {
+            if ($append) {
+                static::$event->getIO()->write("Appending code $name to $dest");
+                $destContent .= PHP_EOL.PHP_EOL.$code;
+            }else {
+                static::$event->getIO()->write("Prepending code $name to $dest");
+                $destContent = $code.PHP_EOL.PHP_EOL.$destContent;
+            }
+            $destContent = trim($destContent).PHP_EOL;
+            file_put_contents($dest, $destContent);
+            return;
+        }
+        //code does exist in the file, replace it
+        static::$event->getIO()->write("Updating code $name in $dest");
+        $destContent = preg_replace($regex, $code, $destContent);
+        file_put_contents($dest, $destContent);
+    }
+
+    protected static function copyFile($src, $dest)
+    {
         copy($src, $dest);
         static::$event->getIO()->write("Copied $dest");
     }
