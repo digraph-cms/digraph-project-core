@@ -14,5 +14,7 @@
             "DigraphProject\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "symfony/filesystem": "^4.3"
+    }
 }
