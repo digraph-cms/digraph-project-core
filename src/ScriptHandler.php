@@ -37,8 +37,8 @@ class ScriptHandler
 
         /* copy files */
         static::copyFile("$src/digraph.yaml", "$dest/digraph/core/digraph.yaml");
-        static::copyFile("$src/digraph.php", "$dest/digraph/core/digraph.php");
-        static::copyFile("$src/index.php", "$dest/web/index.php");
+        static::placeCodeInFile("$src/index-setup.php", "$dest/web/index.php", "INDEX-SETUP", true);
+        static::placeCodeInFile("$src/index-execute.php", "$dest/web/index.php", "INDEX-EXECUTE", true);
         static::placeCodeInFile("$src/htaccess", "$dest/web/.htaccess", "HTACCESS", true);
         static::placeCodeInFile("$src/gitignore", "$dest/.gitignore", "GITIGNORE", true);
     }
@@ -52,7 +52,6 @@ class ScriptHandler
         $code = implode(PHP_EOL, [
             $prefix,
             $lp.'Do not edit this code, it will be replaced whenever composer update/install runs',
-            PHP_EOL,
             file_get_contents($src),
             $suffix,
         ]);
@@ -66,7 +65,7 @@ class ScriptHandler
         //destination file exists, so load its content
         $destContent = file_get_contents($dest);
         //build regex to find existing code in file
-        $regex = implode('',[
+        $regex = implode('', [
             '/',
             preg_quote($prefix),
             '.+',
@@ -74,11 +73,11 @@ class ScriptHandler
             '/s'
         ]);
         //append/prepend code if it isn't already in the file
-        if (!preg_match($regex,$destContent)) {
+        if (!preg_match($regex, $destContent)) {
             if ($append) {
                 static::$event->getIO()->write("Appending code $name to $dest");
                 $destContent .= PHP_EOL.PHP_EOL.$code;
-            }else {
+            } else {
                 static::$event->getIO()->write("Prepending code $name to $dest");
                 $destContent = $code.PHP_EOL.PHP_EOL.$destContent;
             }
