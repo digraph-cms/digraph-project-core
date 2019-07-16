@@ -22,6 +22,11 @@ media:
   paths:
     site: ${paths.site}/media
 
+# site routing
+routing:
+  paths:
+    site: ${paths.site}/routes
+
 # Template helper options
 templates:
   # templates.theme can be either a single theme name or an array of theme names
