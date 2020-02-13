@@ -13,6 +13,7 @@
 # this is so you can just manually install the debug module
 # on your dev environment and never accidentally commit it
 /modules/digraph_debug_module/
+/modules/digraph-debug-module/
 
 # ignore environment config
 env.yaml
