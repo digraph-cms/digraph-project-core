@@ -15,7 +15,9 @@
         }
     },
     "require": {
-        "digraphcms/digraph-core": "~1",
+        "digraphcms/digraph-core": "~1"
+    },
+    "require-dev": {
         "symfony/filesystem": "^4.3"
     }
 }
