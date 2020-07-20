@@ -9,8 +9,9 @@ $config = new \Flatrr\Config\Config();
 # load project default config
 $config->readFile($SITE_PATH.'/digraph/core/digraph.yaml');
 
-# set site path
+# set site paths
 $config['paths.site'] = $SITE_PATH;
+$config['paths.web'] = __DIR__;
 
 # load site config, overwriting anything else set
 $config->readFile($SITE_PATH.'/digraph.yaml', null, true);
