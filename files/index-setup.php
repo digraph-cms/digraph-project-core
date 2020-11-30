@@ -50,5 +50,6 @@ $config->readFile($SITE_PATH.'/env.yaml', null, true);
 # it's advisable to use the Bootstrapper url() method for
 # getting your query string
 $package = new Digraph\Mungers\Package([
-'request.url' => \Digraph\Bootstrapper::url()
+'request.url' => \Digraph\Bootstrapper::url(),
+'request.post' => $_POST
 ]);
