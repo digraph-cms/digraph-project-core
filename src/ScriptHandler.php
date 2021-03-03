@@ -1,5 +1,5 @@
 <?php
-/* digraph-project-core | https://gitlab.com/byjoby/digraph-project-core | MIT License */
+/* digraph-project-core | https://github.com/digraph-cms/digraph-project-core | MIT License */
 namespace DigraphProject;
 
 use Composer\Script\Event;
@@ -31,12 +31,11 @@ class ScriptHandler
         $dest = realpath(__DIR__.'/../../../../');
 
         /* start creating directories */
-        static::mkdir("$dest/digraph/storage", true);
-        static::mkdir("$dest/digraph/cache", true);
+        static::mkdir("$dest/storage", true);
+        static::mkdir("$dest/cache", true);
         static::mkdir("$dest/web");
 
         /* copy files */
-        static::copyFile("$src/digraph.yaml", "$dest/digraph/core/digraph.yaml");
         static::placeCodeInFile("$src/index-setup.php", "$dest/web/index.php", "INDEX-SETUP", true);
         static::placeCodeInFile("$src/index-execute.php", "$dest/web/index.php", "INDEX-EXECUTE", true);
         static::placeCodeInFile("$src/htaccess", "$dest/web/.htaccess", "HTACCESS", true);
