@@ -44,4 +44,5 @@ if (file_exists($SITE_PATH . '/env.yaml')) {
 # getting your query string
 $package = new Digraph\Mungers\Package([
     'request.url' => \Digraph\Bootstrapper::url(),
+    'request.post' => $_POST
 ]);
