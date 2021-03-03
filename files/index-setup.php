@@ -26,6 +26,16 @@ if (!$config['paths.cache'] || !is_writeable($config['paths.cache'])) {
     }
 }
 
+# try to guess URL if necessary
+if (!$config['url']) {
+    $config['url'] = [
+        'protocol' => '//',
+        'domain' => $_SERVER['HTTP_HOST'],
+        'path' => preg_replace('/index\.php$/', '', $_SERVER['SCRIPT_NAME']),
+        'forcehttps' => false,
+    ];
+}
+
 # set up CMS using Bootstrapper
 # everything the bootstrapper does can be done manually, but
 # in most cases it's better to use it
@@ -39,10 +49,13 @@ if (file_exists($SITE_PATH . '/env.yaml')) {
     $config->readFile($SITE_PATH . '/env.yaml', null, true);
 }
 
+# override config paths using array from index.php, done twice to override modules
+$config->merge($PATHS, 'paths', true);
+
 # set up new request/response package
 # it's advisable to use the Bootstrapper url() method for
 # getting your query string
 $package = new Digraph\Mungers\Package([
     'request.url' => \Digraph\Bootstrapper::url(),
-    'request.post' => $_POST
+    'request.post' => $_POST,
 ]);
