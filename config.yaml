@@ -1,4 +1,6 @@
 paths:
+  storage: ${paths.site}/storage
+  cache: ${paths.site}/cache
   assets: ${paths.site}/web/assets
 
 # Template helper options
@@ -9,12 +11,6 @@ templates:
     site: ${paths.site}/templates
   twigconfig:
     cache: ${paths.cache}/twig
-
-# Generally if you want to move your storage/cache directories you should keep
-# them somehow relative to paths.site
-paths:
-  storage: ${paths.site}/storage
-  cache: ${paths.site}/cache
 
 # It's helpful for a site to have its own media directory as well
 media:
