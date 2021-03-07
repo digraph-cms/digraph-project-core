@@ -9,6 +9,11 @@ class ScriptHandler
 {
     protected static $event = null;
 
+    public static function configFile()
+    {
+        return realpath(__DIR__.'/../config.yaml');
+    }
+
     public static function updateHandler(Event $event)
     {
         static::$event = $event;
@@ -24,16 +29,17 @@ class ScriptHandler
     protected static function setupFilesystem()
     {
         // src directory is this package's root
-        $src = realpath(__DIR__.'/../files/');
+        $src = realpath(__DIR__ . '/../files/');
         // dest directory assumes this package is in the project's
         // digraph/core directory, which makes it four levels above
         // this file
-        $dest = realpath(__DIR__.'/../../../../');
+        $dest = realpath(__DIR__ . '/../../../../');
 
         /* start creating directories */
         static::mkdir("$dest/storage", true);
         static::mkdir("$dest/cache", true);
         static::mkdir("$dest/web");
+        static::mkdir("$dest/web/assets", true);
 
         /* copy files */
         static::placeCodeInFile("$src/index-setup.php", "$dest/web/index.php", "INDEX-SETUP", true);
@@ -42,15 +48,15 @@ class ScriptHandler
         static::placeCodeInFile("$src/gitignore", "$dest/.gitignore", "GITIGNORE", true);
     }
 
-    protected static function placeCodeInFile($src, $dest, $name, $append=false, $lp='# ')
+    protected static function placeCodeInFile($src, $dest, $name, $append = false, $lp = '# ')
     {
         //generate prefix/suffix so code can be found later and replaced
-        $prefix = $lp.'BEGIN DIGRAPH-MANAGED: '.$name;
-        $suffix = $lp.'END DIGRAPH-MANAGED: '.$name;
+        $prefix = $lp . 'BEGIN DIGRAPH-MANAGED: ' . $name;
+        $suffix = $lp . 'END DIGRAPH-MANAGED: ' . $name;
         //generate code to be inserted, including prefix/suffix
         $code = implode(PHP_EOL, [
             $prefix,
-            $lp.'Do not edit this code, it will be replaced whenever composer update/install runs',
+            $lp . 'Do not edit this code, it will be replaced whenever composer update/install runs',
             file_get_contents($src),
             $suffix,
         ]);
@@ -69,18 +75,18 @@ class ScriptHandler
             preg_quote($prefix),
             '.+',
             preg_quote($suffix),
-            '/s'
+            '/s',
         ]);
         //append/prepend code if it isn't already in the file
         if (!preg_match($regex, $destContent)) {
             if ($append) {
                 static::$event->getIO()->write("Appending code $name to $dest");
-                $destContent .= PHP_EOL.PHP_EOL.$code;
+                $destContent .= PHP_EOL . PHP_EOL . $code;
             } else {
                 static::$event->getIO()->write("Prepending code $name to $dest");
-                $destContent = $code.PHP_EOL.PHP_EOL.$destContent;
+                $destContent = $code . PHP_EOL . PHP_EOL . $destContent;
             }
-            $destContent = trim($destContent).PHP_EOL;
+            $destContent = trim($destContent) . PHP_EOL;
             file_put_contents($dest, $destContent);
             return;
         }
@@ -96,7 +102,7 @@ class ScriptHandler
         static::$event->getIO()->write("Copied $dest");
     }
 
-    protected static function mkdir($path, $writeable=false)
+    protected static function mkdir($path, $writeable = false)
     {
         $fs = new Filesystem();
         if (!$fs->exists($path)) {

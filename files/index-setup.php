@@ -3,6 +3,9 @@
 # set up new config file to get started
 $config = new \Flatrr\Config\Config();
 
+# load digraph-project-core default config
+$config->readFile(\DigraphProject\ScriptHandler::configFile());
+
 # set site path
 $config['paths.site'] = $SITE_PATH;
 

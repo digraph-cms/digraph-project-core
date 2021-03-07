@@ -1,0 +1,33 @@
+paths:
+  assets: ${paths.site}/web/assets
+
+# Template helper options
+templates:
+  # Additional paths can be added here, they will be used in the reverse of the
+  # order they're listed here
+  paths:
+    site: ${paths.site}/templates
+  twigconfig:
+    cache: ${paths.cache}/twig
+
+# Generally if you want to move your storage/cache directories you should keep
+# them somehow relative to paths.site
+paths:
+  storage: ${paths.site}/storage
+  cache: ${paths.site}/cache
+
+# It's helpful for a site to have its own media directory as well
+media:
+  paths:
+    site: ${paths.site}/media
+
+# site routing
+routing:
+  paths:
+    site: ${paths.site}/routes
+
+# Configure module directories for site
+modules:
+  sources:
+    200-composer: composer-dir ${paths.site}/vendor/digraphcms/modules
+    300-site: dir ${paths.site}/modules
