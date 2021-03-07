@@ -3,9 +3,10 @@
 # keep everything installed by composer out of git
 /vendor
 
-# keep storage and cache out of git
+# keep storage, cache, and assets out of git
 /cache
 /storage
+/web/assets
 
 # explicitly disallow tracking digraph-debug-module
 # this is so you can just manually install the debug module
