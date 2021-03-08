@@ -34,6 +34,7 @@ class ScriptHandler
         static::mkdir("$dest/digraph/storage", true);
         static::mkdir("$dest/digraph/cache", true);
         static::mkdir("$dest/web");
+        static::mkdir("$dest/web/assets", true);
 
         /* copy files */
         static::copyFile("$src/digraph.yaml", "$dest/digraph/core/digraph.yaml");
