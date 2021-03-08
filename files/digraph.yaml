@@ -16,6 +16,7 @@ package:
 paths:
   storage: ${paths.site}/digraph/storage
   cache: ${paths.site}/digraph/cache
+  assets: ${paths.site}/assets
 
 # It's helpful for a site to have its own media directory as well
 media:
