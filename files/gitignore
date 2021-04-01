@@ -6,9 +6,9 @@
 /digraph/modules/
 
 # keep storage and cache out of git
-/digraph/cache/
-/digraph/storage/
-/web/assets/
+/digraph/cache/*
+/digraph/storage/*
+/web/assets/*
 
 # explicitly disallow tracking digraph-debug-module
 # this is so you can just manually install the debug module
