@@ -37,7 +37,7 @@ class ScriptHandler
         static::mkdir("$dest/web/assets", true);
 
         /* copy files */
-        static::copyFile("$src/digraph.yaml", "$dest/digraph/core/digraph.yaml");
+        static::copyFile("$src/digraph.json", "$dest/digraph/core/digraph.json");
         static::placeCodeInFile("$src/index-setup.php", "$dest/web/index.php", "INDEX-SETUP", true);
         static::placeCodeInFile("$src/index-execute.php", "$dest/web/index.php", "INDEX-EXECUTE", true);
         static::placeCodeInFile("$src/htaccess", "$dest/web/.htaccess", "HTACCESS", true);

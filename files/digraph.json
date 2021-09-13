@@ -1,0 +1,49 @@
+{
+  "package": {
+    "defaults": {
+      "fields": {
+        "site_name": "Digraph example site"
+      }
+    }
+  },
+  "paths": {
+    "storage": "${paths.site}/digraph/storage",
+    "cache": "${paths.site}/digraph/cache",
+    "assets": "${paths.site}/web/assets"
+  },
+  "media": {
+    "paths": {
+      "site": "${paths.site}/media"
+    }
+  },
+  "routing": {
+    "paths": {
+      "site": "${paths.site}/routes"
+    }
+  },
+  "templates": {
+    "theme": [
+      "digraph-basic"
+    ],
+    "paths": {
+      "site": "${paths.site}/templates"
+    },
+    "twigconfig": {
+      "cache": "${paths.cache}/twig"
+    }
+  },
+  "modules": {
+    "sources": {
+      "200-composer": "composer-dir ${paths.site}/digraph/modules",
+      "300-site": "dir ${paths.site}/modules"
+    }
+  },
+  "cache": {
+    "factorycache": {
+      "threshold": 10
+    },
+    "mungercache": {
+      "threshold": 10
+    }
+  }
+}
